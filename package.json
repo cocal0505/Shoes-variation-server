@@ -1,0 +1,28 @@
+{
+  "name": "node-mongoDB",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.22.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^4.1.2",
+    "mongoose": "^6.0.8",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.3.0",
+    "nodemon": "^2.0.13"
+  },
+  "scripts": {
+    "node": "nodemon index.js --ignore client",
+    "server": "nodemon server.js --ignore 'client/' ",
+    "client": "npm run serve --prefix client",
+    "dev": "concurrently \" npm run server \" \"npm run client\" \"npm run node\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
