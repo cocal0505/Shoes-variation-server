@@ -62,38 +62,38 @@ app.listen(PORT ,()=>{
 
 
 
-if(app.use){
-    console.log("something sended")
-}
+// if(app.use){
+//     console.log("something sended")
+// }
 
 
-async function readServer(){
-        await axios.get('http://localhost:3000/api/bucketListItems/')
-    .then((res)=>{
+// async function readServer(){
+//         await axios.get('http://localhost:3000/api/bucketListItems/')
+//     .then((res)=>{
         
-        const array = res.data[0].array
-        console.log("fromserver", array)
+//         const array = res.data[0].array
+//         console.log("fromserver", array)
 
-      function python(){
+//       function python(){
             
-            const process1 = spawn('python', ['./python/repeat.py',array]);
-            process1.stdout.on('data',async data=>{
-                const data1 = data.toString()
-                 console.log("from python",data1)  
+//             const process1 = spawn('python', ['./python/repeat.py',array]);
+//             process1.stdout.on('data',async data=>{
+//                 const data1 = data.toString()
+//                  console.log("from python",data1)  
 
-                await axios.post('http://localhost:3000/api/frompython',{
-                    array:data1
-                })
-            })
+//                 await axios.post('http://localhost:3000/api/frompython',{
+//                     array:data1
+//                 })
+//             })
           
-        }
-        python()
-    })
+//         }
+//         python()
+//     })
     
-    .catch((err)=>{
-        console.log(err)
-        })
-    }
+//     .catch((err)=>{
+//         console.log(err)
+//         })
+//     }
 
 
 //  function yes(){
