@@ -43,6 +43,21 @@ app.listen(PORT ,()=>{
 
 
 
+// async function readserver(){
+//     await axios.post('http://localhost:3000/api/bucketListItems',{
+//            array:[1,23,44,5]
+//     })
+//            .then((res)=>{
+//               console.log(res.data)
+//            }).catch(err=>{
+//              console.log(err)
+//            })
+//  }
+
+
+//  readserver()
+
+
 
 
 
