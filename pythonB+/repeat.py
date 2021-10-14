@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from PIL import Image
-import sys 
+import sys
+import random
 
 from ML import rgb2lab
 from ML import all_LAB_SVM
@@ -25,24 +26,16 @@ from ML import temp_pallete_RGB
 # temp_targetData = [[255, 0, 0], [244, 247, 114], [252, 255, 248], [186, 205, 219], [-999, -999, -999], [244, 247, 114], [244, 247, 114], [186, 205, 219], [-999, -999, -999], [244, 247, 114], [-999, -999, -999]]
 
 
-# array = sys.argv[3]
-# print(array)
-#print(temp_targetData)
+
+
+
 array = sys.argv[1].split(',')
 array1 = list(array)
-# temp_targetData =[]
-# for i in range(10):
-#   # print(i)
-#   temp_col = []
-#   for j in range(3):
-#       # print(j)
-#       temp_col.append(array1[0])
-# temp_targetData.append(temp_col)
+
+
 
 temp_targetData = np.reshape(array1,(11,3))
 
-# print("from node",temp_targetData)
-# print("from python", temp_targetData)
 
 ################ making LABData #######################
 
@@ -146,6 +139,17 @@ recommend_palleteNum = pallete_score.idxmin()
 
 # print(recommend_palleteNum['score'], "번 팔레트 추천")
 # print("RGB로 팔레트의 각 색을 번역하면")
-print(temp_pallete_RGB[recommend_palleteNum['score']])
+#print(temp_pallete_RGB[recommend_palleteNum['score']])
 # print("repeat")
+
+################################################################
+
+############# 얻은 색을 무작위로 할당 #################
+finalOutput = temp_pallete_RGB[recommend_palleteNum['score']][1:]
+toRegion = [(0,0,0)]
+
+for i in range(10):
+  toRegion.append(random.choice(finalOutput))
+
+print(toRegion)
 

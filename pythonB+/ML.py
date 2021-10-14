@@ -69,7 +69,7 @@ def rgb2lab (inputColor) :
 ############ color pallete로부터 RGB 추출 ##############################
 #from google.colab import drive
 #drive.mount('/gdrive', force_remount = True)
-pallete_path = "C:/Users/cocal/desktop/jess/test/p_test/"
+pallete_path = "C:/Users/cocal/Desktop/Shoes-variation-server/p_test/"
 
 #팔레트 색좌표
 areaPos = ((40,400),(130,400),(210,400),(290,400),(380,400),(450,400)) #0428 수정
@@ -128,7 +128,7 @@ pallete_LAB.index+=1 #영역별 RGB 데이터역시 1로 시작하기 때문에 
 # #구글드라이브에서 파일 불러오기
 #from google.colab import drive
 #drive.mount('/gdrive', force_remount = True)
-drive_path = "C:/Users/cocal/desktop/jess/test/DesignData/"
+drive_path = "C:/Users/cocal/Desktop/Shoes-variation-server/DesignData/"
 
 #x,y는 안쪽 튜플의 0,1 / 외곽 튜플은 1->1영역, 10->10영역
 areaPos = ((0,0),(80,40),(30,245),(122,122),(120,160),(110,200),(120,240),(175,350),(240,450),(244,463),(213,483))

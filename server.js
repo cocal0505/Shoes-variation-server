@@ -45,36 +45,6 @@ app.listen(PORT ,()=>{
 
 
 
-// async function readserver(){
-//     await axios.post('http://localhost:3000/api/bucketListItems',{
-//            array:[1,23,44,5]
-//     })
-//            .then((res)=>{
-//               console.log(res.data)
-//            }).catch(err=>{
-//              console.log(err)
-//            })
-//  }
-
-
-//  readserver()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -91,13 +61,16 @@ async function readServer(){
 
       function python(){
             
-            const process1 = spawn('python', ['./python/repeat.py',array]);
+            const process1 = spawn('python', ['./pythonC/repeat.py',array]);
             process1.stdout.on('data',async data=>{
                 const data1 = data.toString()
                  console.log("from python",data1)  
 
                 await axios.post('https://shose-variation-2.herokuapp.com/api/frompython',{
                     array:data1
+                })
+                .then((res)=>{
+                    console.log(res.data)
                 })
             })
           
