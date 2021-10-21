@@ -19,10 +19,7 @@ from ML import temp_pallete_RGB
 #처음 255,0,0은 더미 데이터라 저거 넣으면 됨, -999는 빈 영역을 저렇게 표시
 #위에 모습처럼 temp_targetData 만들면 됨
 
-# temp_targetData = [[255, 0, 0], [244, 247, 114], [252, 255, 248], [186, 205, 219], [-999, -999, -999], [244, 247, 114], [244, 247, 114], [186, 205, 219], [-999, -999, -999], [244, 247, 114], [-999, -999, -999]]
-
-
-
+#temp_targetData = [[255, 0, 0], [244, 247, 114], [252, 255, 248], [186, 205, 219], [-999, -999, -999], [244, 247, 114], [244, 247, 114], [186, 205, 219], [-999, -999, -999], [244, 247, 114], [-999, -999, -999]]
 
 
 array = sys.argv[1].split(',')
@@ -30,13 +27,6 @@ array1 = list(array)
 
 temp_targetData = np.reshape(array1,(11,3))
 
-
-################ making LABData #######################
-
-# drive.mount('/gdrive', force_remount = True)
-# drive_path = "/gdrive/Shareddrives/2021_proj/targetData/"
-
-#x,y는 안쪽 튜플의 0,1 / 외곽 튜플은 1->1영역, 10->10영역
 
 ################ making LABData #######################
 
@@ -65,8 +55,6 @@ temp_testDataLAB = df
 
 target_LAB = temp_testDataLAB.drop(index=0)
 
-#target_LAB
-
 ################### 타겟 신발의 각 영역의 클러스터 알아보기 #########################
 
 target_LAB_cluster = target_LAB.copy()
@@ -82,15 +70,12 @@ for i in range(1,11):
     temp_cluster.append(answer[i-1])
 
 target_LAB_cluster['cluster'] = temp_cluster
-#target_LAB_cluster
 
-###############################################################################################
-
-data_LAB_cluster_temp = pd.read_csv(r"C:/Users/cocal/Desktop/Shoes-variation-server/247Linear/Value.csv")
+data_LAB_cluster_temp = pd.read_csv(r"C:/Users/USER/Desktop/Shoes-variation-server/247Linear/Value.csv")
 
 data_LAB_cluster247 = pd.DataFrame(data_LAB_cluster_temp, columns = ['B2','L4','L7','cluster'])
-data_LAB_cluster247
 
+##################################################
 data = data_LAB_cluster247.drop(columns=['cluster'])
 target = data_LAB_cluster247.drop(columns=['B2', 'L4', 'L7'])
 
@@ -106,7 +91,6 @@ cluster_predict = cluster_predict_array[0]
 
 #print(cluster_predict)
 
-#############################################################################
 #각 영역별 선형회귀 식의 계수
 #adjusted R-squared 0.7이상
 #2,4,11 유형은 5,6은 그냥 서로만 참조해도 R-squared가 0.9가 넘음
@@ -234,6 +218,7 @@ linerRegressionOther = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
                         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+
 if cluster_predict == 2:
   linerRegressionTarget = linerRegression2.copy()
 elif cluster_predict == 4:
@@ -295,9 +280,6 @@ while same == False:
     if breaker == True: #이중 for문 탈출을 위한 구문
       break
 
-#target_LAB
-
-##########################################################################
 ############# 각 유형별 영역의 범위 #######################
 cluster_range = [[(-999,-999),(-999,-999),(-999,-999), (-999,-999),(-999,-999),(-15,15), (-999,-999),(-999,-999),(-999,-999), #0유형 L1
                   (85,100),(-999,-999),(-999,-999), (-999,-999),(-999,-999),(-999,-999), (-999,-999),(-999,-999),(-999,-999), #0유형 L4
@@ -431,9 +413,14 @@ pred_pallete = recommend_palleteNum['score']
 
 #################### 고른 팔레트로 사용자가 칠한 색이랑 가장 가까운색 칠하기 + 빈 영역 유추 ##################
 
-areaCol = [0,0,0,0,0,0,0,0,0,0,0] #각 영역에 몇번째 색이 들어가야하는지
+import random
 
-for targetArea in range(1,11):
+areaCol = [0,0,0,0,0,0,0,0,0,0,0] #각 영역에 몇번째 색이 들어가야하는지
+usedColor  = []
+
+for targetArea in [2,4,3,5,6,1,7,8,9,10]: #데이터를 이용한 인접 행렬 만들기
+  #print(targetArea, "영역 칠하기")
+
   if (target_LAB.loc[targetArea,'L'] < -900) and (target_LAB.loc[targetArea,'A'] < -900) and (target_LAB.loc[targetArea,'B'] < -900): #empty area
     #print(targetArea,"는 비어 있는 영역")
     temp_rangeOfLABinArea = [] #해당 유형에 해당 영역의 LAB값의 (시작점,끝점): [(-999,-999),(-999,-999),(-10,30)]
@@ -447,6 +434,7 @@ for targetArea in range(1,11):
 
     availCol = [] #범위의 조건을 만족하는 색
     for colorNum in range((pred_pallete-1)*6+1,(pred_pallete-1)*6+7): #각 팔래트 위의 색
+
       Lswitch,Aswitch,Bswitch = False, False, False #해당 범위에 돌고있는 팔레트의 색의 L,A,B가 속하는지: 속하거나 LAB의 기준이 없으면 True 아니면 False
       if (temp_rangeOfLABinArea[0][0] <= pallete_LAB.loc[colorNum,'L'] <= temp_rangeOfLABinArea[0][1]) or (temp_rangeOfLABinArea[0] == (-999,-999)): #L값
         Lswitch=True
@@ -454,8 +442,31 @@ for targetArea in range(1,11):
         Aswitch=True
       if (temp_rangeOfLABinArea[2][0] <= pallete_LAB.loc[colorNum,'B'] <= temp_rangeOfLABinArea[2][1]) or (temp_rangeOfLABinArea[2] == (-999,-999)): #B값
         Bswitch=True
+      
       if (Lswitch==True) and (Aswitch==True) and (Bswitch==True): #지정된 색이 해당 범위를 만족함
+        #인접 행렬 조건
+        if (targetArea == 4) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 3) and (colorNum == areaCol[4]):
+          continue
+        elif (targetArea == 5):
+          if (colorNum == areaCol[2]) or (colorNum == areaCol[4]):
+            continue
+        elif (targetArea == 6):
+          if (colorNum == areaCol[2]) or (colorNum == areaCol[4]):
+            continue
+        elif (targetArea == 1) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 7) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 8) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 9) and (colorNum == areaCol[8]):
+          continue
+        elif (targetArea == 10) and (colorNum == areaCol[9]):
+          continue
         availCol.append(colorNum)
+    
     #print(availCol)
     if availCol != []:
       #print(targetArea, "에 가능한 색은",availCol)
@@ -465,7 +476,31 @@ for targetArea in range(1,11):
     min_distance = 1000
 
     for colorNum in range((pred_pallete-1)*6+1,(pred_pallete-1)*6+7):
+
+      #인접 행렬 조건
+      if (targetArea == 4) and (colorNum == areaCol[2]):
+        continue
+      elif (targetArea == 3) and (colorNum == areaCol[4]):
+        continue
+      elif (targetArea == 5):
+        if (colorNum == areaCol[2]) or (colorNum == areaCol[4]):
+          continue
+      elif (targetArea == 6):
+        if (colorNum == areaCol[2]) or (colorNum == areaCol[4]):
+          continue
+      elif (targetArea == 1) and (colorNum == areaCol[2]):
+        continue
+      elif (targetArea == 7) and (colorNum == areaCol[2]):
+        continue
+      elif (targetArea == 8) and (colorNum == areaCol[2]):
+        continue
+      elif (targetArea == 9) and (colorNum == areaCol[8]):
+        continue
+      elif (targetArea == 10) and (colorNum == areaCol[9]):
+        continue
+
       temp_color_distance = 0
+
       if pallete_LAB.loc[colorNum,'L'] > -990: #L값이 있을 때
         temp_color_distance += ((pallete_LAB.loc[colorNum,'L']-target_LAB.loc[targetArea,'L'])**2)
       if pallete_LAB.loc[colorNum,'A'] > -990: #A값이 있을 때
@@ -479,6 +514,9 @@ for targetArea in range(1,11):
       if temp_color_distance < min_distance:
         min_distance = temp_color_distance
         areaCol[targetArea] = colorNum
+        
+    usedColor.append(areaCol[targetArea])
+    #palleteCluster[colorNum] = -1 #사용한 색은 클러스터를 -1로 바꿈
 
 #print("정할 수 있었던 색: ", areaCol)
 
@@ -486,11 +524,6 @@ for targetArea in range(1,11):
 selCol = list()
 
 palleteColor = list(range((pred_pallete-1)*6+1,(pred_pallete-1)*6+7))
-usedColor  = []
-
-for targetArea in range(1,11):
-  if areaCol[targetArea] != 0:
-    usedColor.append(areaCol[targetArea])
 
 #print("used Color:", usedColor)
 
@@ -507,7 +540,32 @@ for targetArea in range(1,11):
       continue
     
     if unUsedColor == []: #만약 모든 색을 다 썼으면
-      areaCol[targetArea] = random.choice(usedColor)
+      candidateColor = []
+      for colorNum in range((pred_pallete-1)*6+1,(pred_pallete-1)*6+7):
+      #인접 행렬 조건
+        if (targetArea == 4) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 3) and (colorNum == areaCol[4]):
+          continue
+        elif (targetArea == 5):
+          if (colorNum == areaCol[2]) or (colorNum == areaCol[4]):
+            continue
+        elif (targetArea == 6):
+          if (colorNum == areaCol[2]) or (colorNum == areaCol[4]):
+            continue
+        elif (targetArea == 1) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 7) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 8) and (colorNum == areaCol[2]):
+          continue
+        elif (targetArea == 9) and (colorNum == areaCol[8]):
+          continue
+        elif (targetArea == 10) and (colorNum == areaCol[9]):
+          continue
+        candidateColor.append(colorNum)
+
+      areaCol[targetArea] = random.choice(candidateColor)
     
     else: #안썼으면 안쓴색 쓰기
       areaCol[targetArea] = random.choice(unUsedColor)
@@ -522,10 +580,15 @@ areaRGB = [(0,0,0)]
 
 for i in range(1,11):
   num = areaCol[i]
+  
   palleteNum = (num//6)+1
+  if num%6==0:
+    palleteNum = num//6
+  
   colorNum = num%6
   if colorNum == 0:
     colorNum = 6
+  
   areaRGB.append(temp_pallete_RGB[palleteNum][colorNum])
 
 print(areaRGB)
