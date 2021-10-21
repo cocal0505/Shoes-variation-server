@@ -34,7 +34,7 @@ array1 = list(array)
 
 
 temp_targetData = np.reshape(array1,(11,3))
-
+# print("from node",temp_targetData)
 
 ################ making LABData #######################
 
