@@ -71,7 +71,7 @@ for i in range(1,11):
 
 target_LAB_cluster['cluster'] = temp_cluster
 
-data_LAB_cluster_temp = pd.read_csv(r"C:/Users/USER/Desktop/Shoes-variation-server/247Linear/Value.csv")
+data_LAB_cluster_temp = pd.read_csv(r"C:/Users/cocal/Desktop/Shoes-variation-server/247Linear/Value.csv")
 
 data_LAB_cluster247 = pd.DataFrame(data_LAB_cluster_temp, columns = ['B2','L4','L7','cluster'])
 
